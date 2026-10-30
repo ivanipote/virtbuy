@@ -6,22 +6,20 @@
     <title>VirtBuy - Pâtisserie</title>
 
     <style>
-        /* 1. Le Body : On le structure en colonne sur 100% de l'écran */
         body {
             background-color: rgb(207, 191, 172);
             margin: 0;
-            height: 100vh; /* Prend toute la hauteur de l'écran */
+            height: 100vh;
             display: flex;
-            flex-direction: column; /* Empile : Header -> Main -> Footer */
+            flex-direction: column;
             font-family: Arial, sans-serif;
-            overflow: hidden; /* Empêche le body de scroller */
+            overflow: hidden;
         }
 
-        /* 2. Le Header (Textes en haut) */
         .header {
             padding: 10px 15px;
             text-align: center;
-            flex-shrink: 0; /* Empêche le header de rétrécir */
+            flex-shrink: 0;
         }
 
         .desc {
@@ -41,45 +39,40 @@
             margin: 0;
         }
 
-        /* 3. Le Main (La zone scrollable) */
         main {
-            flex: 1; /* Prend TOUT l'espace restant entre le header et le footer */
-            overflow-y: auto; /* Active le scroll UNIQUEMENT ici */
+            flex: 1;
+            overflow-y: auto;
             padding: 10px 15px;
+            padding-bottom: 100px; /* Espace pour le bouton flottant */
             display: flex;
             flex-direction: column;
-            gap: 15px; /* Espace entre l'image et la vidéo */
+            gap: 15px;
         }
 
         video, img {
             width: 100%;
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            /* On enlève object-fit: cover et la hauteur fixe pour laisser les médias respirer */
-            display: block; 
+            display: block;
         }
 
-        /* 4. Le Footer (Toujours visible en bas) */
-        footer {
-            flex-shrink: 0; /* Empêche le footer de rétrécir */
-            background-color: #f3f4f6;
-            padding: 15px;
-            box-shadow: 0 -4px 10px rgba(0,0,0,0.1); /* Ombre vers le haut */
-            display: flex;
-            justify-content: flex-end; /* Pousse le bouton à droite */
-        }
-
+        /* LE BOUTON FLOTTANT */
         .btn {
             background-color: #0B2545;
             color: white;
             text-decoration: none;
-            padding: 12px 30px;
+            padding: 15px 30px;
             border-radius: 50px;
             font-weight: bold;
             font-size: 18px;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            display: inline-block;
+
+            /* 👇 LES LIGNES MAGIQUES 👇 */
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
         }
 
         .btn:hover {
@@ -88,48 +81,40 @@
             color: #0B2545;
         }
 
-        /* 5. Responsive (Pour iPhone et petits écrans) */
+        /* Responsive */
         @media (max-width: 600px) {
-            .desc {
-                font-size: 20px; /* On réduit le titre */
-            }
-            .pro {
-                font-size: 13px;
-            }
-            footer {
-                justify-content: center; /* Sur mobile, on centre le bouton */
-            }
+            .desc { font-size: 20px; }
+            .pro { font-size: 13px; }
+
+            /* Sur mobile, le bouton prend toute la largeur en bas */
             .btn {
-                width: 100%; /* Le bouton prend toute la largeur du footer */
+                left: 20px;
+                right: 20px;
                 text-align: center;
-                box-sizing: border-box;
+                bottom: 20px;
+                padding: 15px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- HEADER -->
     <header class="header">
         <p class="desc">Bienvenue sur VirtBuy</p>
         <p class="pro">Observez les produits pâtissiers, le pain croustillant !</p>
     </header>
 
-    <!-- MAIN (Zone scrollable) -->
     <main>
         <video src="gateau.mp4" controls muted></video>
         <img src="gat.png" alt="Image Non Disponible">
-        
-        <!-- Tu peux ajouter d'autres textes ou images ici, ça va scroller -->
-        <p style="text-align: center; color: #555;">Découvrez nos délicieuses pâtisseries faites maison avec amour. Chaque bouchée est une explosion de saveurs !</p>
+
+        <p style="text-align: center; color: #555; padding-bottom: 20px;">Découvrez nos délicieuses pâtisseries faites maison avec amour. Chaque bouchée est une explosion de saveurs !</p>
     </main>
 
-    <!-- FOOTER (Bouton toujours visible) -->
-    <footer>
-        <a class="btn" href="https://pay.jeko.africa/pl/5c180956-5257-4645-8e5b-629b37c4af7b" target="_blank">
-            Payer : 500 F
-        </a>
-    </footer>
+    <!-- ON A SUPPRIMÉ LE FOOTER, LE BOUTON EST DANS LE MAIN MAIS FLOTTANT -->
+    <a class="btn" href="https://pay.jeko.africa/pl/5c180956-5257-4645-8e5b-629b37c4af7b" target="_blank">
+        Payer : 500 F
+    </a>
 
 </body>
 </html>

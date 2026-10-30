@@ -1,120 +1,186 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VirtBuy - Pâtisserie</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VirtBuy - Pâtisserie</title>
 
-    <style>
-        body {
-            background-color: rgb(207, 191, 172);
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-        }
+<style>
+  :root {
+    --sugar: #fdeef1;
+    --choco: #3b1f1a;
+    --raspberry: #c2185b;
+    --raspberry-dark: #9c1049;
+    --butter: #f6d58e;
+    --card: rgba(255, 255, 255, 0.88);
+    --pay-height: 84px;
+  }
 
-        .header {
-            padding: 10px 15px;
-            text-align: center;
-            flex-shrink: 0;
-        }
+  *, *::before, *::after { box-sizing: border-box; }
 
-        .desc {
-            color: rgb(146, 14, 137);
-            font-size: 26px;
-            font-weight: bold;
-            background-color: azure;
-            border-radius: 15px;
-            padding: 8px;
-            margin: 0 0 5px 0;
-        }
+  html, body { margin: 0; min-height: 100%; }
 
-        .pro {
-            color: rgb(202, 17, 174);
-            font-size: 15px;
-            font-weight: bold;
-            margin: 0;
-        }
+  body {
+    font-family: "Trebuchet MS", system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--choco);
+    background-color: var(--sugar);
+    /* Motif de pâtisseries (beignet, cupcake, macaron, cookie) en SVG intégré */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cg opacity='.55'%3E%3C!-- beignet --%3E%3Ccircle cx='45' cy='45' r='24' fill='%23e8a0b4'/%3E%3Ccircle cx='45' cy='45' r='8' fill='%23fdeef1'/%3E%3Crect x='30' y='32' width='7' height='2.5' rx='1' fill='%23fff' transform='rotate(25 33 33)'/%3E%3Crect x='52' y='28' width='7' height='2.5' rx='1' fill='%23f6d58e' transform='rotate(-30 55 29)'/%3E%3Crect x='56' y='52' width='7' height='2.5' rx='1' fill='%238fbf8f' transform='rotate(60 59 53)'/%3E%3C!-- cupcake --%3E%3Cpath d='M147 62 L173 62 L169 90 L151 90 Z' fill='%23b9774f'/%3E%3Ccircle cx='160' cy='54' r='17' fill='%23f4b6c4'/%3E%3Ccircle cx='160' cy='36' r='4.5' fill='%23c2185b'/%3E%3C!-- macaron --%3E%3Cellipse cx='55' cy='158' rx='22' ry='9' fill='%238fbf8f'/%3E%3Crect x='36' y='164' width='38' height='6' rx='3' fill='%23fff'/%3E%3Cellipse cx='55' cy='176' rx='22' ry='9' fill='%238fbf8f'/%3E%3C!-- cookie --%3E%3Ccircle cx='160' cy='165' r='22' fill='%23d9a066'/%3E%3Ccircle cx='152' cy='158' r='3.5' fill='%233b1f1a'/%3E%3Ccircle cx='168' cy='162' r='3.5' fill='%233b1f1a'/%3E%3Ccircle cx='158' cy='174' r='3.5' fill='%233b1f1a'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 220px 220px;
+    background-attachment: fixed;
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+  }
 
-        main {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px 15px;
-            padding-bottom: 100px; /* Espace pour le bouton flottant */
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+  /* ---------- Structure ---------- */
+  .page {
+    width: min(100%, 760px);
+    margin-inline: auto;
+    padding: calc(16px + env(safe-area-inset-top, 0px)) 16px
+             calc(var(--pay-height) + 24px + env(safe-area-inset-bottom, 0px));
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
 
-        video, img {
-            width: 100%;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            display: block;
-        }
+  /* ---------- En-tête ---------- */
+  .header {
+    text-align: center;
+    background: var(--card);
+    border-radius: 20px;
+    padding: 18px 16px;
+    box-shadow: 0 6px 18px rgba(59, 31, 26, 0.15);
+    -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
+  }
 
-        /* LE BOUTON FLOTTANT */
-        .btn {
-            background-color: #0B2545;
-            color: white;
-            text-decoration: none;
-            padding: 15px 30px;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 18px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  .title {
+    margin: 0 0 6px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.5rem, 5vw, 2.25rem);
+    line-height: 1.15;
+    color: var(--raspberry);
+  }
 
-            /* 👇 LES LIGNES MAGIQUES 👇 */
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
+  .subtitle {
+    margin: 0;
+    font-size: clamp(0.95rem, 2.8vw, 1.1rem);
+    font-weight: bold;
+    color: var(--choco);
+  }
 
-        .btn:hover {
-            background-color: #D4AF37;
-            transform: scale(1.05);
-            color: #0B2545;
-        }
+  /* ---------- Médias ---------- */
+  .media {
+    width: 100%;
+    display: block;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 6px 18px rgba(59, 31, 26, 0.25);
+  }
 
-        /* Responsive */
-        @media (max-width: 600px) {
-            .desc { font-size: 20px; }
-            .pro { font-size: 13px; }
+  video.media {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    background: #000;
+  }
 
-            /* Sur mobile, le bouton prend toute la largeur en bas */
-            .btn {
-                left: 20px;
-                right: 20px;
-                text-align: center;
-                bottom: 20px;
-                padding: 15px;
-            }
-        }
-    </style>
+  img.media {
+    height: auto;
+    min-height: 120px;
+    object-fit: cover;
+  }
+
+  /* ---------- Texte ---------- */
+  .text {
+    margin: 0;
+    padding: 16px;
+    text-align: center;
+    background: var(--card);
+    border-radius: 20px;
+    font-size: clamp(0.95rem, 2.6vw, 1.05rem);
+    box-shadow: 0 6px 18px rgba(59, 31, 26, 0.12);
+  }
+
+  /* ---------- Barre de paiement toujours visible ---------- */
+  .pay-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    padding: 14px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+    background: linear-gradient(to top, rgba(253, 238, 241, 0.97) 60%, rgba(253, 238, 241, 0));
+    pointer-events: none; /* seul le bouton capte les clics */
+  }
+
+  .btn {
+    pointer-events: auto;
+    width: min(100%, 420px);
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 28px;
+    border-radius: 999px;
+    background: var(--raspberry);
+    color: #fff;
+    font-size: 1.15rem;
+    font-weight: bold;
+    text-decoration: none;
+    box-shadow: 0 6px 18px rgba(194, 24, 91, 0.45);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .btn:hover { background: var(--raspberry-dark); transform: translateY(-2px); }
+  .btn:active { transform: translateY(0); }
+  .btn:focus-visible { outline: 3px solid var(--choco); outline-offset: 3px; }
+
+  /* ---------- Adaptations ---------- */
+  @media (min-width: 900px) {
+    .page { gap: 24px; padding-top: 32px; }
+    .header { padding: 24px; }
+  }
+
+  /* Paysage sur petit écran : on réduit la barre pour garder le contenu lisible */
+  @media (max-height: 480px) and (orientation: landscape) {
+    :root { --pay-height: 64px; }
+    .pay-bar { padding-block: 8px; }
+    .btn { min-height: 46px; padding-block: 8px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn { transition: none; }
+    .btn:hover { transform: none; }
+  }
+</style>
 </head>
+
 <body>
 
+  <main class="page">
     <header class="header">
-        <p class="desc">Bienvenue sur VirtBuy</p>
-        <p class="pro">Observez les produits pâtissiers, le pain croustillant !</p>
+      <h1 class="title">Bienvenue sur VirtBuy</h1>
+      <p class="subtitle">Observez les produits pâtissiers, le pain croustillant !</p>
     </header>
 
-    <main>
-        <video src="gateau.mp4" controls muted></video>
-        <img src="gat.png" alt="Image Non Disponible">
+    <video class="media" src="gateau.mp4" controls muted playsinline preload="metadata"></video>
 
-        <p style="text-align: center; color: #555; padding-bottom: 20px;">Découvrez nos délicieuses pâtisseries faites maison avec amour. Chaque bouchée est une explosion de saveurs !</p>
-    </main>
+    <img class="media" src="gat.png" alt="Nos pâtisseries" loading="lazy">
 
-    <!-- ON A SUPPRIMÉ LE FOOTER, LE BOUTON EST DANS LE MAIN MAIS FLOTTANT -->
-    <a class="btn" href="https://pay.jeko.africa/pl/5c180956-5257-4645-8e5b-629b37c4af7b" target="_blank">
-        Payer : 500 F
+    <p class="text">
+      Découvrez nos délicieuses pâtisseries faites maison avec amour.
+      Chaque bouchée est une explosion de saveurs !
+    </p>
+  </main>
+
+  <!-- Bouton fixe : toujours visible, sur mobile comme sur ordinateur -->
+  <div class="pay-bar">
+    <a class="btn" href="https://pay.jeko.africa/pl/5c180956-5257-4645-8e5b-629b37c4af7b" target="_blank" rel="noopener noreferrer">
+      Payer : 500 F
     </a>
+  </div>
 
 </body>
 </html>

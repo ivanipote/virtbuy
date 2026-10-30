@@ -6,24 +6,27 @@
     <title>VirtBuy - Pâtisserie</title>
 
     <style>
-        /* 1. On bloque le scroll de la page et on fait une colonne */
+        /* 1. Le Body : On le structure en colonne sur 100% de l'écran */
         body {
-            background-color: rgb(199, 234, 217);
+            background-color: rgb(207, 191, 172);
             margin: 0;
-            padding: 10px 15px;
             height: 100vh; /* Prend toute la hauteur de l'écran */
             display: flex;
-            flex-direction: column;
-            box-sizing: border-box;
+            flex-direction: column; /* Empile : Header -> Main -> Footer */
             font-family: Arial, sans-serif;
-            overflow: hidden; /* Empêche de scroller */
+            overflow: hidden; /* Empêche le body de scroller */
         }
 
-        /* 2. Les textes en haut */
+        /* 2. Le Header (Textes en haut) */
+        .header {
+            padding: 10px 15px;
+            text-align: center;
+            flex-shrink: 0; /* Empêche le header de rétrécir */
+        }
+
         .desc {
             color: rgb(146, 14, 137);
             font-size: 26px;
-            text-align: center;
             font-weight: bold;
             background-color: azure;
             border-radius: 15px;
@@ -35,29 +38,37 @@
             color: rgb(202, 17, 174);
             font-size: 15px;
             font-weight: bold;
-            text-align: center;
-            margin: 0 0 10px 0;
+            margin: 0;
         }
 
-        /* 3. La zone des médias (Vidéo et Image) */
-        .medias {
+        /* 3. Le Main (La zone scrollable) */
+        main {
+            flex: 1; /* Prend TOUT l'espace restant entre le header et le footer */
+            overflow-y: auto; /* Active le scroll UNIQUEMENT ici */
+            padding: 10px 15px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            flex: 1; /* Prend tout l'espace restant entre les textes et le bouton */
-            min-height: 0; /* Bug fix pour que ça rétrécisse bien */
+            gap: 15px; /* Espace entre l'image et la vidéo */
         }
 
         video, img {
             width: 100%;
-            flex: 1; /* La vidéo et l'image se partagent l'espace restant à 50/50 */
-            object-fit: cover; /* Remplit l'espace sans déformer */
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            min-height: 0;
+            /* On enlève object-fit: cover et la hauteur fixe pour laisser les médias respirer */
+            display: block; 
         }
 
-        /* 4. LE BOUTON EN BAS A DROITE */
+        /* 4. Le Footer (Toujours visible en bas) */
+        footer {
+            flex-shrink: 0; /* Empêche le footer de rétrécir */
+            background-color: #f3f4f6;
+            padding: 15px;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.1); /* Ombre vers le haut */
+            display: flex;
+            justify-content: flex-end; /* Pousse le bouton à droite */
+        }
+
         .btn {
             background-color: #0B2545;
             color: white;
@@ -68,35 +79,57 @@
             font-size: 18px;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-
-            /* On le pousse à droite avec Flexbox */
-            align-self: flex-end; /* Le colle à droite */
-            margin-top: 10px;
             display: inline-block;
         }
 
         .btn:hover {
-            background-color: #368fd7;
+            background-color: #D4AF37;
             transform: scale(1.05);
             color: #0B2545;
+        }
+
+        /* 5. Responsive (Pour iPhone et petits écrans) */
+        @media (max-width: 600px) {
+            .desc {
+                font-size: 20px; /* On réduit le titre */
+            }
+            .pro {
+                font-size: 13px;
+            }
+            footer {
+                justify-content: center; /* Sur mobile, on centre le bouton */
+            }
+            .btn {
+                width: 100%; /* Le bouton prend toute la largeur du footer */
+                text-align: center;
+                box-sizing: border-box;
+            }
         }
     </style>
 </head>
 <body>
 
-    <p class="desc">Achetes rapidement!😍</p>
-    <p class="pro">le pain croustillant pour prendre de la force pour la journéé entiere🥖</p>
+    <!-- HEADER -->
+    <header class="header">
+        <p class="desc">Bienvenue sur VirtBuy</p>
+        <p class="pro">Observez les produits pâtissiers, le pain croustillant !</p>
+    </header>
 
-    <!-- La zone qui prend l'espace restant -->
-    <div class="medias">
+    <!-- MAIN (Zone scrollable) -->
+    <main>
         <video src="gateau.mp4" controls muted></video>
         <img src="gat.png" alt="Image Non Disponible">
-    </div>
+        
+        <!-- Tu peux ajouter d'autres textes ou images ici, ça va scroller -->
+        <p style="text-align: center; color: #555;">Découvrez nos délicieuses pâtisseries faites maison avec amour. Chaque bouchée est une explosion de saveurs !</p>
+    </main>
 
-    <!-- Le bouton est poussé à droite en bas -->
-    <a class="btn" href="https://pay.jeko.africa/pl/5c180956-5257-4645-8e5b-629b37c4af7b" target="_blank">
-        Payer : 500 F l'unité
-    </a>
+    <!-- FOOTER (Bouton toujours visible) -->
+    <footer>
+        <a class="btn" href="https://pay.jeko.africa/pl/5c180956-5257-4645-8e5b-629b37c4af7b" target="_blank">
+            Payer : 500 F
+        </a>
+    </footer>
 
 </body>
 </html>

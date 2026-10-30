@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VirtBuy - L'Atelier Pâtisserie</title>
+
+    <style>
+        /* 1. LA BASE : Le fond de pâtisserie et la structure */
+        body {
+            /* Un dégradé chaleureux : crème, caramel clair */
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            background-color: #fdf6e3; /* Couleur de secours */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Prend toute la hauteur de l'écran */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Empêche le body de scroller */
+        }
+
+        /* 2. LE HEADER : Titres gourmands */
+        .header {
+            text-align: center;
+            padding: 15px 20px 10px 20px;
+            flex-shrink: 0; /* Ne rétrécit pas */
+            background: rgba(255, 255, 255, 0.8); /* Fond blanc translucide */
+            border-bottom: 2px dashed #d4a373; /* Ligne pointillée façon pâtisserie */
+        }
+
+        .desc {
+            color: #8b4513; /* Chocolat */
+            font-size: 28px;
+            font-weight: 900;
+            margin: 0 0 5px 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .pro {
+            color: #d2691e; /* Cannelle */
+            font-size: 15px;
+            font-weight: 600;
+            margin: 0;
+            font-style: italic;
+        }
+
+        /* 3. LE MAIN : La zone qui défile */
+        main {
+            flex: 1; /* Prend tout l'espace restant */
+            overflow-y: auto; /* Active le scroll vertical */
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding-bottom: 100px; /* Espace pour le bouton flottant */
+        }
+
+        /* Les médias (Vidéo et Image) */
+        .media-container {
+            background: white;
+            padding: 10px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(139, 69, 19, 0.15); /* Ombre chocolat */
+            border: 1px solid #f0e6d2;
+        }
+
+        video, img {
+            width: 100%;
+            border-radius: 15px;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* Texte de description dans le main */
+        .description {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 20px;
+            color: #5d4037;
+            line-height: 1.6;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border-left: 5px solid #e5989b; /* Touche de rose framboise */
+        }
+
+        .description h2 {
+            color: #8b4513;
+            font-size: 20px;
+            margin-top: 0;
+        }
+
+        /* 4. LE BOUTON PAYER (Fixe, toujours visible) */
+        .btn-payer {
+            /* Couleur Framboise / Magenta gourmand */
+            background: linear-gradient(135deg, #e5989b 0%, #b56576 100%);
+            color: white;
+            text-decoration: none;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 18px;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(181, 101, 118, 0.4); /* Ombre colorée */
+
+            /* 👇 LA MAGIE POUR QU'IL SOIT TOUJOURS LA 👇 */
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-payer:hover {
+            background: linear-gradient(135deg, #b56576 0%, #e5989b 100%);
+            transform: translateY(-3px) scale(1.05); /* Effet de soulèvement */
+            box-shadow: 0 10px 25px rgba(181, 101, 118, 0.6);
+            color: white;
+        }
+
+        /* 5. RESPONSIVE (Pour les téléphones) */
+        @media (max-width: 600px) {
+            .desc { font-size: 22px; }
+            .pro { font-size: 13px; }
+
+            /* Sur mobile, le bouton prend toute la largeur en bas */
+            .btn-payer {
+                left: 20px;
+                right: 20px;
+                bottom: 20px;
+                justify-content: center;
+                padding: 16px;
+            }
+        }
+
+        /* Optionnel : Personnalisation de la barre de défilement (Scrollbar) */
+        main::-webkit-scrollbar {
+            width: 8px;
+        }
+        main::-webkit-scrollbar-track {
+            background: #fdf6e3;
+        }
+        main::-webkit-scrollbar-thumb {
+            background: #d4a373;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <p class="desc">L'Atelier VirtBuy</p>
+        <p class="pro">Des produits pâtissiers faits avec passion, pour éveiller vos papilles.</p>
+    </header>
+
+    <!-- MAIN (Zone défilante) -->
+    <main>
+        <!-- La vidéo dans une jolie boîte -->
+        <div class="media-container">
+            <video src="gateau.mp4" controls muted loop></video>
+        </div>
+
+        <!-- L'image dans une jolie boîte -->
+        <div class="media-container">
+            <img src="gat.png" alt="Délicieux gâteau VirtBuy">
+        </div>
+
+        <!-- La description -->
+        <div class="description">
+            <h2>🥐 Le Pain Croustillant</h2>
+            <p>Découvrez nos délices faits maison. Chaque bouchée est une explosion de saveurs, alliant la douceur du chocolat et le croquant de la pâte parfaite. Commandez votre pack dès maintenant et régalez-vous !</p>
+        </div>
+    </main>
+
+    <!-- LE BOUTON PAYER (Toujours visible en bas) -->
+    <a class="btn-payer" href="https://pay.jeko.africa/pl/5c180956-5257-4645-8e5b-629b37c4af7b" target="_blank">
+        💳 Payer : 1 Pack = 500 F
+    </a>
+
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VirtBuy - Boutique en ligne</title>
+
+    <style>
+        /* =========================================
+           1. BARRE DE NAVIGATION (HEADER)
+           ========================================= */
+        .header {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0px 15px;
+            border-radius: 15px;
+            background-color: rgb(196, 193, 189);
+            height: 50px;
+            border: 1px solid #0B2545;
+        }
+
+        .siteName {
+            font-weight: bold;
+            background-color: azure;
+            border-radius: 23px;
+            padding: 5px 10px;
+            color: rgb(18, 41, 41);
+            border: 2px solid #0B2545;
+        }
+
+        .bar {
+            background-color: azure;
+            border-radius: 23px;
+            padding: 5px 10px;
+            font-weight: bold;
+            border: 2px solid #0B2545;
+            transition: all 0.3s ease;
+        }
+
+        /* Effet quand on clique dans la barre de recherche */
+        .bar:focus {
+            background-color: rgb(212, 206, 225);
+            border: 3px solid rgb(119, 196, 206);
+            outline: none;
+            transform: scale(1.05);
+        }
+
+        /* Effet quand on survole la barre de recherche */
+        .bar:hover {
+            background-color: rgb(212, 206, 225);
+            border: 3px solid rgb(119, 196, 206);
+            outline: none;
+            transform: scale(1.05);
+        }
+
+        .para {
+            background-color: azure;
+            border-radius: 23px;
+            padding: 5px 10px;
+            font-weight: bold;
+            border: 2px solid #0B2545;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .para:hover {
+            background-color: rgb(149, 192, 192);
+            transform: scale(1.05);
+        }
+
+        /* =========================================
+           2. LA GRILLE (CONTENEUR DES PRODUITS)
+           ========================================= */
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-content: flex-start;
+
+            margin-top: 12px;
+            padding: 15px;
+            background-color: rgb(182, 182, 217);
+            border-radius: 23px;
+            width: 100%;
+            height: 100vh;
+            overflow: auto;
+            gap: 10px;
+            box-sizing: border-box;
+        }
+
+        /* =========================================
+           3. LA CARTE PRODUIT
+           ========================================= */
+        .produit {
+            background-color: rgb(124, 141, 141);
+            width: 45%;
+            height: 300px;
+            overflow: hidden;
+            border-radius: 23px;
+            position: relative;
+            padding: 5px;
+            transition: all 0.5s ease;
+        }
+
+        .produit:hover {
+            transform: scale(1.05);
+        }
+
+        .produit img {
+            width: 100%;
+            height: 65%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .name {
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        /* =========================================
+           4. LA ZONE D'ACHAT (PRIX ET BOUTON)
+           ========================================= */
+        .action {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #dde5ef;
+            border-radius: 23px;
+            padding: 0px 15px;
+        }
+
+        .price {
+            background-color: aliceblue;
+            border-radius: 23px;
+            font-weight: bolder;
+            padding: 4px 10px;
+        }
+
+        .link {
+            background-color: rgb(158, 183, 205);
+            border-radius: 23px;
+            font-weight: bolder;
+            padding: 4px 10px;
+            text-decoration: none;
+            color: rgb(7, 103, 3);
+            transition: all 0.5s ease;
+        }
+
+        .link:hover {
+            color: #0B2545;
+            background-color: aliceblue;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- EN-TÊTE -->
+    <div class="header">
+        <p class="siteName">VirtBuy</p>
+        <input class="bar" placeholder="Taper pour rechercher">
+        <button class="para">Paramètres</button>
+    </div>
+
+    <!-- GRILLE DE PRODUITS -->
+    <div class="grid">
+
+        <!-- Produit 1 -->
+        <div class="produit">
+            <img src="image.png" alt="Image non disponible">
+            <p class="name">Sac à dos</p>
+            <div class="action">
+                <p class="price">3000 F</p>
+                <a class="link" href="https://wa.me/2250503588336/" target="_blank">Acheter</a>
+            </div>
+        </div>
+
+        <!-- Produit 2 -->
+        <div class="produit">
+            <img src="image.png" alt="Image non disponible">
+            <p class="name">Sac à dos</p>
+            <div class="action">
+                <p class="price">3000 F</p>
+                <a class="link" href="https://wa.me/2250503588336/" target="_blank">Acheter</a>
+            </div>
+        </div>
+
+        <!-- Produit 3 -->
+        <div class="produit">
+            <img src="image.png" alt="Image non disponible">
+            <p class="name">Sac à dos</p>
+            <div class="action">
+                <p class="price">3000 F</p>
+                <a class="link" href="https://wa.me/2250503588336/" target="_blank">Acheter</a>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

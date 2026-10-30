@@ -1,184 +1,278 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VirtBuy - L'Atelier Pâtisserie</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VirtBuy - Pâtisserie</title>
 
-    <style>
-        /* 1. LA BASE : Le fond de pâtisserie et la structure */
-        body {
-            /* Un dégradé chaleureux : crème, caramel clair */
-            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-            background-color: #fdf6e3; /* Couleur de secours */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            height: 100vh; /* Prend toute la hauteur de l'écran */
-            display: flex;
-            flex-direction: column;
-            overflow: hidden; /* Empêche le body de scroller */
-        }
+<style>
+  :root {
+    --sugar: #fdeef1;
+    --choco: #3b1f1a;
+    --raspberry: #c2185b;
+    --raspberry-dark: #9c1049;
+    --butter: #f6d58e;
+    --card: rgba(255, 255, 255, 0.88);
+    --pay-height: 160px;
+  }
 
-        /* 2. LE HEADER : Titres gourmands */
-        .header {
-            text-align: center;
-            padding: 15px 20px 10px 20px;
-            flex-shrink: 0; /* Ne rétrécit pas */
-            background: rgba(255, 255, 255, 0.8); /* Fond blanc translucide */
-            border-bottom: 2px dashed #d4a373; /* Ligne pointillée façon pâtisserie */
-        }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100vh; }
 
-        .desc {
-            color: #8b4513; /* Chocolat */
-            font-size: 28px;
-            font-weight: 900;
-            margin: 0 0 5px 0;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-        }
+  body {
+    font-family: "Trebuchet MS", system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--choco);
+    background-color: var(--sugar);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cg opacity='.55'%3E%3C!-- beignet --%3E%3Ccircle cx='45' cy='45' r='24' fill='%23e8a0b4'/%3E%3Ccircle cx='45' cy='45' r='8' fill='%23fdeef1'/%3E%3Crect x='30' y='32' width='7' height='2.5' rx='1' fill='%23fff' transform='rotate(25 33 33)'/%3E%3Crect x='52' y='28' width='7' height='2.5' rx='1' fill='%23f6d58e' transform='rotate(-30 55 29)'/%3E%3Crect x='56' y='52' width='7' height='2.5' rx='1' fill='%238fbf8f' transform='rotate(60 59 53)'/%3E%3C!-- cupcake --%3E%3Cpath d='M147 62 L173 62 L169 90 L151 90 Z' fill='%23b9774f'/%3E%3Ccircle cx='160' cy='54' r='17' fill='%23f4b6c4'/%3E%3Ccircle cx='160' cy='36' r='4.5' fill='%23c2185b'/%3E%3C!-- macaron --%3E%3Cellipse cx='55' cy='158' rx='22' ry='9' fill='%238fbf8f'/%3E%3Crect x='36' y='164' width='38' height='6' rx='3' fill='%23fff'/%3E%3Cellipse cx='55' cy='176' rx='22' ry='9' fill='%238fbf8f'/%3E%3C!-- cookie --%3E%3Ccircle cx='160' cy='165' r='22' fill='%23d9a066'/%3E%3Ccircle cx='152' cy='158' r='3.5' fill='%233b1f1a'/%3E%3Ccircle cx='168' cy='162' r='3.5' fill='%233b1f1a'/%3E%3Ccircle cx='158' cy='174' r='3.5' fill='%233b1f1a'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 220px 220px;
+    background-attachment: fixed;
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+  }
 
-        .pro {
-            color: #d2691e; /* Cannelle */
-            font-size: 15px;
-            font-weight: 600;
-            margin: 0;
-            font-style: italic;
-        }
+  .page {
+    width: min(100%, 760px);
+    margin-inline: auto;
+    padding: calc(16px + env(safe-area-inset-top, 0px)) 16px
+             calc(var(--pay-height) + 24px + env(safe-area-inset-bottom, 0px));
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
 
-        /* 3. LE MAIN : La zone qui défile */
-        main {
-            flex: 1; /* Prend tout l'espace restant */
-            overflow-y: auto; /* Active le scroll vertical */
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            padding-bottom: 100px; /* Espace pour le bouton flottant */
-        }
+  .header {
+    text-align: center;
+    background: var(--card);
+    border-radius: 20px;
+    padding: 18px 16px;
+    box-shadow: 0 6px 18px rgba(59, 31, 26, 0.15);
+    backdrop-filter: blur(6px);
+  }
 
-        /* Les médias (Vidéo et Image) */
-        .media-container {
-            background: white;
-            padding: 10px;
-            border-radius: 20px;
-            box-shadow: 0 8px 20px rgba(139, 69, 19, 0.15); /* Ombre chocolat */
-            border: 1px solid #f0e6d2;
-        }
+  .title {
+    margin: 0 0 6px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.5rem, 5vw, 2.25rem);
+    color: var(--raspberry);
+  }
 
-        video, img {
-            width: 100%;
-            border-radius: 15px;
-            display: block;
-            object-fit: cover;
-        }
+  .subtitle { margin: 0; font-size: clamp(0.95rem, 2.8vw, 1.1rem); font-weight: bold; }
 
-        /* Texte de description dans le main */
-        .description {
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 20px;
-            color: #5d4037;
-            line-height: 1.6;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            border-left: 5px solid #e5989b; /* Touche de rose framboise */
-        }
+  .media {
+    width: 100%; display: block; border-radius: 20px; background: #fff;
+    box-shadow: 0 6px 18px rgba(59, 31, 26, 0.25);
+  }
 
-        .description h2 {
-            color: #8b4513;
-            font-size: 20px;
-            margin-top: 0;
-        }
+  /* Style spécifique à la vidéo */
+  video.media {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    background: #000;
+  }
 
-        /* 4. LE BOUTON PAYER (Fixe, toujours visible) */
-        .btn-payer {
-            /* Couleur Framboise / Magenta gourmand */
-            background: linear-gradient(135deg, #e5989b 0%, #b56576 100%);
-            color: white;
-            text-decoration: none;
-            padding: 15px 35px;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 18px;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 20px rgba(181, 101, 118, 0.4); /* Ombre colorée */
+  img.media { height: auto; min-height: 120px; object-fit: cover; }
 
-            /* 👇 LA MAGIE POUR QU'IL SOIT TOUJOURS LA 👇 */
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+  /* Galerie d'images */
+  .gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+  }
 
-        .btn-payer:hover {
-            background: linear-gradient(135deg, #b56576 0%, #e5989b 100%);
-            transform: translateY(-3px) scale(1.05); /* Effet de soulèvement */
-            box-shadow: 0 10px 25px rgba(181, 101, 118, 0.6);
-            color: white;
-        }
+  .gallery img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(59, 31, 26, 0.2);
+    transition: transform 0.3s ease;
+  }
 
-        /* 5. RESPONSIVE (Pour les téléphones) */
-        @media (max-width: 600px) {
-            .desc { font-size: 22px; }
-            .pro { font-size: 13px; }
+  .gallery img:hover {
+    transform: scale(1.03);
+  }
 
-            /* Sur mobile, le bouton prend toute la largeur en bas */
-            .btn-payer {
-                left: 20px;
-                right: 20px;
-                bottom: 20px;
-                justify-content: center;
-                padding: 16px;
-            }
-        }
+  .text {
+    margin: 0; padding: 16px; text-align: center; background: var(--card);
+    border-radius: 20px; font-size: clamp(0.95rem, 2.6vw, 1.05rem);
+    box-shadow: 0 6px 18px rgba(59, 31, 26, 0.12);
+  }
 
-        /* Optionnel : Personnalisation de la barre de défilement (Scrollbar) */
-        main::-webkit-scrollbar {
-            width: 8px;
-        }
-        main::-webkit-scrollbar-track {
-            background: #fdf6e3;
-        }
-        main::-webkit-scrollbar-thumb {
-            background: #d4a373;
-            border-radius: 10px;
-        }
-    </style>
+  /* ---------- BARRE DE PAIEMENT ---------- */
+  .pay-bar {
+    position: fixed; left: 50%; bottom: 0; z-index: 1000;
+    width: min(100%, 560px);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    padding: 10px 20px calc(16px + env(safe-area-inset-bottom, 0px));
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    border-radius: 28px 28px 0 0;
+    box-shadow: 0 -8px 28px rgba(59, 31, 26, 0.28);
+    transform: translate(-50%, 0);
+    animation: sheet-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.9s both;
+  }
+
+  .pay-bar::before {
+    content: ""; width: 44px; height: 5px; border-radius: 999px;
+    background: rgba(59, 31, 26, 0.2);
+  }
+
+  .price-note { margin: 0 0 5px 0; font-size: 1rem; font-weight: bold; text-align: center; }
+  .price-note span { color: var(--raspberry); }
+
+  .buttons-container { display: flex; gap: 10px; width: 100%; }
+
+  .btn {
+    flex: 1; min-height: 56px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 10px; border-radius: 999px;
+    font-size: 1.1rem; font-weight: bold; text-decoration: none;
+    transition: all 0.2s ease; border: none; cursor: pointer;
+  }
+
+  .btn-commander {
+    background-color: #fff;
+    color: var(--raspberry);
+    border: 2px solid var(--raspberry);
+  }
+  .btn-commander:hover { background-color: var(--sugar); }
+
+  .btn-payer {
+    background: var(--raspberry);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(194, 24, 91, 0.4);
+  }
+  .btn-payer:hover { background: var(--raspberry-dark); transform: translateY(-2px); }
+
+  /* ---------- OVERLAY ---------- */
+  .overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(59, 31, 26, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+  }
+
+  .overlay.active { opacity: 1; pointer-events: auto; }
+
+  .modal {
+    background: var(--sugar);
+    width: 90%; max-width: 400px;
+    padding: 30px 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+    text-align: center;
+    position: relative;
+  }
+
+  .overlay.active .modal { transform: translateY(0); }
+
+  .modal h2 { margin-top: 0; color: var(--raspberry); font-size: 22px; }
+  .modal p { color: var(--choco); font-size: 16px; margin-bottom: 25px; line-height: 1.6; }
+
+  .btn-continuer {
+    display: block;
+    width: 100%; padding: 15px; border-radius: 10px;
+    background: var(--raspberry); color: white;
+    font-weight: bold; font-size: 18px; text-decoration: none;
+    box-shadow: 0 4px 12px rgba(194, 24, 91, 0.4);
+    transition: all 0.3s ease;
+  }
+  .btn-continuer:hover { background: var(--raspberry-dark); transform: translateY(-2px); }
+
+  .close-btn {
+    position: absolute; top: 15px; right: 15px;
+    background: none; border: none; font-size: 28px;
+    color: var(--choco); cursor: pointer; line-height: 1;
+  }
+
+  /* Animations */
+  @keyframes reveal { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+  @keyframes sheet-up { from { transform: translate(-50%, 110%); } to { transform: translate(-50%, 0); } }
+  .reveal { animation: reveal 0.7s both; animation-delay: calc(var(--i, 0) * 0.15s); }
+
+  @media (max-width: 480px) {
+    .btn { font-size: 1rem; padding: 8px; }
+    .gallery img { height: 140px; }
+  }
+</style>
 </head>
+
 <body>
 
-    <!-- HEADER -->
-    <header class="header">
-        <p class="desc">L'Atelier VirtBuy</p>
-        <p class="pro">Des produits pâtissiers faits avec passion, pour éveiller vos papilles.</p>
+  <main class="page">
+    <header class="header reveal" style="--i:0">
+      <h1 class="title">Bienvenue sur VirtBuy</h1>
+      <p class="subtitle">Observez les produits pâtissiers, le pain croustillant !</p>
     </header>
 
-    <!-- MAIN (Zone défilante) -->
-    <main>
-        <!-- La vidéo dans une jolie boîte -->
-        <div class="media-container">
-            <video src="gateau.mp4" controls muted loop></video>
-        </div>
+    <!-- 👇 LA VIDEO AVEC LE SON ET LE NOUVEAU NOM 👇 -->
+    <video class="media reveal" style="--i:1" src="gat.mp4" controls playsinline preload="metadata"></video>
 
-        <!-- L'image dans une jolie boîte -->
-        <div class="media-container">
-            <img src="gat.png" alt="Délicieux gâteau VirtBuy">
-        </div>
+    <img class="media reveal" style="--i:2" src="gat.png" alt="Nos pâtisseries">
 
-        <!-- La description -->
-        <div class="description">
-            <h2>🥐 Le Pain Croustillant</h2>
-            <p>Découvrez nos délices faits maison. Chaque bouchée est une explosion de saveurs, alliant la douceur du chocolat et le croquant de la pâte parfaite. Commandez votre pack dès maintenant et régalez-vous !</p>
-        </div>
-    </main>
+    <!-- LA GALERIE D'IMAGES JPEG -->
+    <div class="gallery reveal" style="--i:3">
+      <img src="gat1.jpeg" alt="Pâtisserie 1">
+      <img src="gat2.jpeg" alt="Pâtisserie 2">
+      <img src="gat3.jpeg" alt="Pâtisserie 3">
+      <img src="gat4.jpeg" alt="Pâtisserie 4">
+    </div>
 
-    <!-- LE BOUTON PAYER (Toujours visible en bas) -->
-    <a class="btn-payer" href="https://pay.jeko.africa/pl/5c180956-5257-4645-8e5b-629b37c4af7b" target="_blank">
-        💳 Payer : 1 Pack = 500 F
-    </a>
+    <p class="text reveal" style="--i:4">
+      Découvrez nos délicieuses pâtisseries faites maison avec amour.
+      Chaque bouchée est une explosion de saveurs !
+    </p>
+  </main>
+
+  <!-- BARRE DE PAIEMENT -->
+  <div class="pay-bar">
+    <p class="price-note">1 paquet = <span>500 F</span></p>
+    <div class="buttons-container">
+      <button class="btn btn-commander" id="openOverlay">Commander</button>
+      <a class="btn btn-payer" href="https://pay.jeko.africa/pl/5c180956-5257-4645-8e5b-629b37c4af7b" target="_blank" rel="noopener noreferrer">Payer</a>
+    </div>
+  </div>
+
+  <!-- OVERLAY -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <button class="close-btn" id="closeOverlay">&times;</button>
+      <h2>Avant de payer</h2>
+      <p>
+        Lors du paiement, vous serez amené à <strong>entrer votre nom</strong> afin que nous puissions reconnaître votre commande et vous la remettre.
+      </p>
+      <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Merci de votre confiance !</p>
+
+      <a class="btn-continuer" href="https://pay.jeko.africa/pl/5daed6be-a8c8-43ca-859b-fb02791dac1e" target="_blank" rel="noopener noreferrer">
+        Continuer vers le paiement
+      </a>
+    </div>
+  </div>
+
+  <script>
+    const overlay = document.getElementById('overlay');
+    const openBtn = document.getElementById('openOverlay');
+    const closeBtn = document.getElementById('closeOverlay');
+
+    openBtn.addEventListener('click', () => {
+      overlay.classList.add('active');
+    });
+
+    closeBtn.addEventListener('click', () => {
+      overlay.classList.remove('active');
+    });
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        overlay.classList.remove('active');
+      }
+    });
+  </script>
 
 </body>
 </html>

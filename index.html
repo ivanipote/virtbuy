@@ -13,18 +13,16 @@
     --raspberry-dark: #9c1049;
     --butter: #f6d58e;
     --card: rgba(255, 255, 255, 0.88);
-    --pay-height: 140px;
+    --pay-height: 160px;
   }
 
   *, *::before, *::after { box-sizing: border-box; }
-
-  html, body { margin: 0; min-height: 100%; }
+  html, body { margin: 0; min-height: 100vh; }
 
   body {
     font-family: "Trebuchet MS", system-ui, -apple-system, "Segoe UI", sans-serif;
     color: var(--choco);
     background-color: var(--sugar);
-    /* Motif de pâtisseries (beignet, cupcake, macaron, cookie) en SVG intégré */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cg opacity='.55'%3E%3C!-- beignet --%3E%3Ccircle cx='45' cy='45' r='24' fill='%23e8a0b4'/%3E%3Ccircle cx='45' cy='45' r='8' fill='%23fdeef1'/%3E%3Crect x='30' y='32' width='7' height='2.5' rx='1' fill='%23fff' transform='rotate(25 33 33)'/%3E%3Crect x='52' y='28' width='7' height='2.5' rx='1' fill='%23f6d58e' transform='rotate(-30 55 29)'/%3E%3Crect x='56' y='52' width='7' height='2.5' rx='1' fill='%238fbf8f' transform='rotate(60 59 53)'/%3E%3C!-- cupcake --%3E%3Cpath d='M147 62 L173 62 L169 90 L151 90 Z' fill='%23b9774f'/%3E%3Ccircle cx='160' cy='54' r='17' fill='%23f4b6c4'/%3E%3Ccircle cx='160' cy='36' r='4.5' fill='%23c2185b'/%3E%3C!-- macaron --%3E%3Cellipse cx='55' cy='158' rx='22' ry='9' fill='%238fbf8f'/%3E%3Crect x='36' y='164' width='38' height='6' rx='3' fill='%23fff'/%3E%3Cellipse cx='55' cy='176' rx='22' ry='9' fill='%238fbf8f'/%3E%3C!-- cookie --%3E%3Ccircle cx='160' cy='165' r='22' fill='%23d9a066'/%3E%3Ccircle cx='152' cy='158' r='3.5' fill='%233b1f1a'/%3E%3Ccircle cx='168' cy='162' r='3.5' fill='%233b1f1a'/%3E%3Ccircle cx='158' cy='174' r='3.5' fill='%233b1f1a'/%3E%3C/g%3E%3C/svg%3E");
     background-size: 220px 220px;
     background-attachment: fixed;
@@ -32,7 +30,6 @@
     -webkit-text-size-adjust: 100%;
   }
 
-  /* ---------- Structure ---------- */
   .page {
     width: min(100%, 760px);
     margin-inline: auto;
@@ -43,159 +40,136 @@
     gap: 18px;
   }
 
-  /* ---------- En-tête ---------- */
   .header {
     text-align: center;
     background: var(--card);
     border-radius: 20px;
     padding: 18px 16px;
     box-shadow: 0 6px 18px rgba(59, 31, 26, 0.15);
-    -webkit-backdrop-filter: blur(6px);
-            backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
   }
 
   .title {
     margin: 0 0 6px;
     font-family: Georgia, "Times New Roman", serif;
     font-size: clamp(1.5rem, 5vw, 2.25rem);
-    line-height: 1.15;
     color: var(--raspberry);
   }
 
-  .subtitle {
-    margin: 0;
-    font-size: clamp(0.95rem, 2.8vw, 1.1rem);
-    font-weight: bold;
-    color: var(--choco);
-  }
+  .subtitle { margin: 0; font-size: clamp(0.95rem, 2.8vw, 1.1rem); font-weight: bold; }
 
-  /* ---------- Médias ---------- */
   .media {
-    width: 100%;
-    display: block;
-    border-radius: 20px;
-    background: #fff;
+    width: 100%; display: block; border-radius: 20px; background: #fff;
     box-shadow: 0 6px 18px rgba(59, 31, 26, 0.25);
   }
+  video.media { aspect-ratio: 16 / 9; object-fit: cover; background: #000; }
+  img.media { height: auto; min-height: 120px; object-fit: cover; }
 
-  video.media {
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    background: #000;
-  }
-
-  img.media {
-    height: auto;
-    min-height: 120px;
-    object-fit: cover;
-  }
-
-  /* ---------- Texte ---------- */
   .text {
-    margin: 0;
-    padding: 16px;
-    text-align: center;
-    background: var(--card);
-    border-radius: 20px;
-    font-size: clamp(0.95rem, 2.6vw, 1.05rem);
+    margin: 0; padding: 16px; text-align: center; background: var(--card);
+    border-radius: 20px; font-size: clamp(0.95rem, 2.6vw, 1.05rem);
     box-shadow: 0 6px 18px rgba(59, 31, 26, 0.12);
   }
 
-  /* ---------- Barre de paiement toujours visible ---------- */
-  /* Panneau "slide" qui monte depuis le bas, coins arrondis */
+  /* ---------- BARRE DE PAIEMENT ---------- */
   .pay-bar {
-    position: fixed;
-    left: 50%;
-    bottom: 0;
-    z-index: 1000;
+    position: fixed; left: 50%; bottom: 0; z-index: 1000;
     width: min(100%, 560px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
     padding: 10px 20px calc(16px + env(safe-area-inset-bottom, 0px));
-    background: #fff;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
     border-radius: 28px 28px 0 0;
     box-shadow: 0 -8px 28px rgba(59, 31, 26, 0.28);
     transform: translate(-50%, 0);
     animation: sheet-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.9s both;
   }
 
-  /* Petite poignée en haut du panneau */
   .pay-bar::before {
-    content: "";
-    width: 44px;
-    height: 5px;
-    border-radius: 999px;
+    content: ""; width: 44px; height: 5px; border-radius: 999px;
     background: rgba(59, 31, 26, 0.2);
   }
 
-  .price-note {
-    margin: 0;
-    text-align: center;
-    font-size: 1rem;
-    font-weight: bold;
-    color: var(--choco);
-  }
-
+  .price-note { margin: 0 0 5px 0; font-size: 1rem; font-weight: bold; text-align: center; }
   .price-note span { color: var(--raspberry); }
 
-  /* ---------- Animations d'affichage ---------- */
-  .reveal {
-    animation: reveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
-    animation-delay: calc(var(--i, 0) * 0.15s);
-  }
-
-  @keyframes reveal {
-    from { opacity: 0; transform: translateY(24px) scale(0.97); }
-    to   { opacity: 1; transform: none; }
-  }
-
-  @keyframes sheet-up {
-    from { transform: translate(-50%, 110%); }
-    to   { transform: translate(-50%, 0); }
-  }
+  .buttons-container { display: flex; gap: 10px; width: 100%; }
 
   .btn {
-    pointer-events: auto;
-    width: min(100%, 420px);
-    min-height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 14px 28px;
-    border-radius: 999px;
+    flex: 1; min-height: 56px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 10px; border-radius: 999px;
+    font-size: 1.1rem; font-weight: bold; text-decoration: none;
+    transition: all 0.2s ease; border: none; cursor: pointer;
+  }
+
+  .btn-commander {
+    background-color: #fff;
+    color: var(--raspberry);
+    border: 2px solid var(--raspberry);
+  }
+  .btn-commander:hover { background-color: var(--sugar); }
+
+  .btn-payer {
     background: var(--raspberry);
     color: #fff;
-    font-size: 1.15rem;
-    font-weight: bold;
-    text-decoration: none;
-    box-shadow: 0 6px 18px rgba(194, 24, 91, 0.45);
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 4px 12px rgba(194, 24, 91, 0.4);
+  }
+  .btn-payer:hover { background: var(--raspberry-dark); transform: translateY(-2px); }
+
+  /* ---------- OVERLAY (Information) ---------- */
+  .overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(59, 31, 26, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
   }
 
-  .btn:hover { background: var(--raspberry-dark); transform: translateY(-2px); }
-  .btn:active { transform: translateY(0); }
-  .btn:focus-visible { outline: 3px solid var(--choco); outline-offset: 3px; }
+  .overlay.active { opacity: 1; pointer-events: auto; }
 
-  /* ---------- Adaptations ---------- */
-  @media (min-width: 900px) {
-    .page { gap: 24px; padding-top: 32px; }
-    .header { padding: 24px; }
+  .modal {
+    background: var(--sugar);
+    width: 90%; max-width: 400px;
+    padding: 30px 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+    text-align: center;
+    position: relative;
   }
 
-  /* Paysage sur petit écran : on réduit la barre pour garder le contenu lisible */
-  @media (max-height: 480px) and (orientation: landscape) {
-    :root { --pay-height: 104px; }
-    .pay-bar { padding-top: 8px; gap: 4px; }
-    .price-note { font-size: 0.9rem; }
-    .btn { min-height: 44px; padding-block: 8px; }
+  .overlay.active .modal { transform: translateY(0); }
+
+  .modal h2 { margin-top: 0; color: var(--raspberry); font-size: 22px; }
+  .modal p { color: var(--choco); font-size: 16px; margin-bottom: 25px; line-height: 1.6; }
+
+  /* Le bouton Continuer dans le modal */
+  .btn-continuer {
+    display: block;
+    width: 100%; padding: 15px; border-radius: 10px;
+    background: var(--raspberry); color: white;
+    font-weight: bold; font-size: 18px; text-decoration: none;
+    box-shadow: 0 4px 12px rgba(194, 24, 91, 0.4);
+    transition: all 0.3s ease;
+  }
+  .btn-continuer:hover { background: var(--raspberry-dark); transform: translateY(-2px); }
+
+  .close-btn {
+    position: absolute; top: 15px; right: 15px;
+    background: none; border: none; font-size: 28px;
+    color: var(--choco); cursor: pointer; line-height: 1;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .reveal, .pay-bar { animation: none; }
-    .btn { transition: none; }
-    .btn:hover { transform: none; }
+  /* Animations */
+  @keyframes reveal { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+  @keyframes sheet-up { from { transform: translate(-50%, 110%); } to { transform: translate(-50%, 0); } }
+  .reveal { animation: reveal 0.7s both; animation-delay: calc(var(--i, 0) * 0.15s); }
+
+  @media (max-width: 480px) {
+    .btn { font-size: 1rem; padding: 8px; }
   }
 </style>
 </head>
@@ -209,22 +183,64 @@
     </header>
 
     <video class="media reveal" style="--i:1" src="gateau.mp4" controls muted playsinline preload="metadata"></video>
-
     <img class="media reveal" style="--i:2" src="gat.png" alt="Nos pâtisseries">
-
     <p class="text reveal" style="--i:3">
       Découvrez nos délicieuses pâtisseries faites maison avec amour.
       Chaque bouchée est une explosion de saveurs !
     </p>
   </main>
 
-  <!-- Panneau slide fixe : toujours visible, sur mobile comme sur ordinateur -->
+  <!-- BARRE DE PAIEMENT -->
   <div class="pay-bar">
     <p class="price-note">1 paquet = <span>500 F</span></p>
-    <a class="btn" href="https://pay.jeko.africa/pl/5c180956-5257-4645-8e5b-629b37c4af7b" target="_blank" rel="noopener noreferrer">
-      Payer
-    </a>
+    <div class="buttons-container">
+      <!-- Bouton Commander qui ouvre l'overlay -->
+      <button class="btn btn-commander" id="openOverlay">Commander</button>
+      <!-- Bouton Payer qui garde ton lien -->
+      <a class="btn btn-payer" href="https://pay.jeko.africa/pl/5c180956-5257-4645-8e5b-629b37c4af7b" target="_blank" rel="noopener noreferrer">Payer</a>
+    </div>
   </div>
+
+  <!-- OVERLAY : Information -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <button class="close-btn" id="closeOverlay">&times;</button>
+      <h2>Avant de payer</h2>
+      <p>
+        Lors du paiement, vous serez amené à <strong>entrer votre nom</strong> afin que nous puissions reconnaître votre commande et vous la remettre.
+      </p>
+      <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Merci de votre confiance !</p>
+
+      <!-- Le bouton Continuer renvoie directement vers le lien de paiement -->
+      <a class="btn-continuer" href="Veuillez payer pour VirtBuy - Pâtisseries faites maison en cliquant sur le lien https://pay.jeko.africa/pl/5daed6be-a8c8-43ca-859b-fb02791dac1e" target="_blank" rel="noopener noreferrer">
+        Continuer vers le paiement
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // On récupère les éléments
+    const overlay = document.getElementById('overlay');
+    const openBtn = document.getElementById('openOverlay');
+    const closeBtn = document.getElementById('closeOverlay');
+
+    // 1. Ouvrir l'overlay
+    openBtn.addEventListener('click', () => {
+      overlay.classList.add('active');
+    });
+
+    // 2. Fermer avec le bouton X
+    closeBtn.addEventListener('click', () => {
+      overlay.classList.remove('active');
+    });
+
+    // 3. Fermer si on clique à l'extérieur de la boîte blanche
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        overlay.classList.remove('active');
+      }
+    });
+  </script>
 
 </body>
 </html>

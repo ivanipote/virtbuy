@@ -13,7 +13,7 @@
     --raspberry-dark: #9c1049;
     --butter: #f6d58e;
     --card: rgba(255, 255, 255, 0.88);
-    --pay-height: 84px;
+    --pay-height: 140px;
   }
 
   *, *::before, *::after { box-sizing: border-box; }
@@ -102,17 +102,58 @@
   }
 
   /* ---------- Barre de paiement toujours visible ---------- */
+  /* Panneau "slide" qui monte depuis le bas, coins arrondis */
   .pay-bar {
     position: fixed;
-    left: 0;
-    right: 0;
+    left: 50%;
     bottom: 0;
     z-index: 1000;
+    width: min(100%, 560px);
     display: flex;
-    justify-content: center;
-    padding: 14px 16px calc(14px + env(safe-area-inset-bottom, 0px));
-    background: linear-gradient(to top, rgba(253, 238, 241, 0.97) 60%, rgba(253, 238, 241, 0));
-    pointer-events: none; /* seul le bouton capte les clics */
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px calc(16px + env(safe-area-inset-bottom, 0px));
+    background: #fff;
+    border-radius: 28px 28px 0 0;
+    box-shadow: 0 -8px 28px rgba(59, 31, 26, 0.28);
+    transform: translate(-50%, 0);
+    animation: sheet-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.9s both;
+  }
+
+  /* Petite poignée en haut du panneau */
+  .pay-bar::before {
+    content: "";
+    width: 44px;
+    height: 5px;
+    border-radius: 999px;
+    background: rgba(59, 31, 26, 0.2);
+  }
+
+  .price-note {
+    margin: 0;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--choco);
+  }
+
+  .price-note span { color: var(--raspberry); }
+
+  /* ---------- Animations d'affichage ---------- */
+  .reveal {
+    animation: reveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(var(--i, 0) * 0.15s);
+  }
+
+  @keyframes reveal {
+    from { opacity: 0; transform: translateY(24px) scale(0.97); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @keyframes sheet-up {
+    from { transform: translate(-50%, 110%); }
+    to   { transform: translate(-50%, 0); }
   }
 
   .btn {
@@ -145,12 +186,14 @@
 
   /* Paysage sur petit écran : on réduit la barre pour garder le contenu lisible */
   @media (max-height: 480px) and (orientation: landscape) {
-    :root { --pay-height: 64px; }
-    .pay-bar { padding-block: 8px; }
-    .btn { min-height: 46px; padding-block: 8px; }
+    :root { --pay-height: 104px; }
+    .pay-bar { padding-top: 8px; gap: 4px; }
+    .price-note { font-size: 0.9rem; }
+    .btn { min-height: 44px; padding-block: 8px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .reveal, .pay-bar { animation: none; }
     .btn { transition: none; }
     .btn:hover { transform: none; }
   }
@@ -160,25 +203,26 @@
 <body>
 
   <main class="page">
-    <header class="header">
+    <header class="header reveal" style="--i:0">
       <h1 class="title">Bienvenue sur VirtBuy</h1>
       <p class="subtitle">Observez les produits pâtissiers, le pain croustillant !</p>
     </header>
 
-    <video class="media" src="gateau.mp4" controls muted playsinline preload="metadata"></video>
+    <video class="media reveal" style="--i:1" src="gateau.mp4" controls muted playsinline preload="metadata"></video>
 
-    <img class="media" src="gat.png" alt="Nos pâtisseries" loading="lazy">
+    <img class="media reveal" style="--i:2" src="gat.png" alt="Nos pâtisseries">
 
-    <p class="text">
+    <p class="text reveal" style="--i:3">
       Découvrez nos délicieuses pâtisseries faites maison avec amour.
       Chaque bouchée est une explosion de saveurs !
     </p>
   </main>
 
-  <!-- Bouton fixe : toujours visible, sur mobile comme sur ordinateur -->
+  <!-- Panneau slide fixe : toujours visible, sur mobile comme sur ordinateur -->
   <div class="pay-bar">
+    <p class="price-note">1 paquet = <span>500 F</span></p>
     <a class="btn" href="https://pay.jeko.africa/pl/5c180956-5257-4645-8e5b-629b37c4af7b" target="_blank" rel="noopener noreferrer">
-      Payer : 500 F
+      Payer
     </a>
   </div>
 

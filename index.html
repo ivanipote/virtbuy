@@ -62,8 +62,36 @@
     width: 100%; display: block; border-radius: 20px; background: #fff;
     box-shadow: 0 6px 18px rgba(59, 31, 26, 0.25);
   }
-  video.media { aspect-ratio: 16 / 9; object-fit: cover; background: #000; }
+
+  /* Style spécifique à la vidéo */
+  video.media {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    background: #000;
+  }
+
   img.media { height: auto; min-height: 120px; object-fit: cover; }
+
+  /* Galerie d'images */
+  .gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .gallery img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(59, 31, 26, 0.2);
+    transition: transform 0.3s ease;
+  }
+
+  .gallery img:hover {
+    transform: scale(1.03);
+  }
 
   .text {
     margin: 0; padding: 16px; text-align: center; background: var(--card);
@@ -117,7 +145,7 @@
   }
   .btn-payer:hover { background: var(--raspberry-dark); transform: translateY(-2px); }
 
-  /* ---------- OVERLAY (Information) ---------- */
+  /* ---------- OVERLAY ---------- */
   .overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(59, 31, 26, 0.7);
@@ -146,7 +174,6 @@
   .modal h2 { margin-top: 0; color: var(--raspberry); font-size: 22px; }
   .modal p { color: var(--choco); font-size: 16px; margin-bottom: 25px; line-height: 1.6; }
 
-  /* Le bouton Continuer dans le modal */
   .btn-continuer {
     display: block;
     width: 100%; padding: 15px; border-radius: 10px;
@@ -170,6 +197,7 @@
 
   @media (max-width: 480px) {
     .btn { font-size: 1rem; padding: 8px; }
+    .gallery img { height: 140px; }
   }
 </style>
 </head>
@@ -182,9 +210,20 @@
       <p class="subtitle">Observez les produits pâtissiers, le pain croustillant !</p>
     </header>
 
-    <video class="media reveal" style="--i:1" src="gateau.mp4" controls muted playsinline preload="metadata"></video>
+    <!-- 👇 LA VIDEO AVEC LE SON ET LE NOUVEAU NOM 👇 -->
+    <video class="media reveal" style="--i:1" src="gat.mp4" controls playsinline preload="metadata"></video>
+
     <img class="media reveal" style="--i:2" src="gat.png" alt="Nos pâtisseries">
-    <p class="text reveal" style="--i:3">
+
+    <!-- LA GALERIE D'IMAGES JPEG -->
+    <div class="gallery reveal" style="--i:3">
+      <img src="gat1.jpeg" alt="Pâtisserie 1">
+      <img src="gat2.jpeg" alt="Pâtisserie 2">
+      <img src="gat3.jpeg" alt="Pâtisserie 3">
+      <img src="gat4.jpeg" alt="Pâtisserie 4">
+    </div>
+
+    <p class="text reveal" style="--i:4">
       Découvrez nos délicieuses pâtisseries faites maison avec amour.
       Chaque bouchée est une explosion de saveurs !
     </p>
@@ -194,14 +233,12 @@
   <div class="pay-bar">
     <p class="price-note">1 paquet = <span>500 F</span></p>
     <div class="buttons-container">
-      <!-- Bouton Commander qui ouvre l'overlay -->
       <button class="btn btn-commander" id="openOverlay">Commander</button>
-      <!-- Bouton Payer qui garde ton lien -->
       <a class="btn btn-payer" href="https://pay.jeko.africa/pl/5c180956-5257-4645-8e5b-629b37c4af7b" target="_blank" rel="noopener noreferrer">Payer</a>
     </div>
   </div>
 
-  <!-- OVERLAY : Information -->
+  <!-- OVERLAY -->
   <div class="overlay" id="overlay">
     <div class="modal">
       <button class="close-btn" id="closeOverlay">&times;</button>
@@ -211,7 +248,6 @@
       </p>
       <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Merci de votre confiance !</p>
 
-      <!-- Le bouton Continuer renvoie directement vers le lien de paiement -->
       <a class="btn-continuer" href="https://pay.jeko.africa/pl/5daed6be-a8c8-43ca-859b-fb02791dac1e" target="_blank" rel="noopener noreferrer">
         Continuer vers le paiement
       </a>
@@ -219,22 +255,18 @@
   </div>
 
   <script>
-    // On récupère les éléments
     const overlay = document.getElementById('overlay');
     const openBtn = document.getElementById('openOverlay');
     const closeBtn = document.getElementById('closeOverlay');
 
-    // 1. Ouvrir l'overlay
     openBtn.addEventListener('click', () => {
       overlay.classList.add('active');
     });
 
-    // 2. Fermer avec le bouton X
     closeBtn.addEventListener('click', () => {
       overlay.classList.remove('active');
     });
 
-    // 3. Fermer si on clique à l'extérieur de la boîte blanche
     overlay.addEventListener('click', (e) => {
       if (e.target === overlay) {
         overlay.classList.remove('active');
